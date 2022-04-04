@@ -7,3 +7,12 @@ it("The character start with 1000 live, level 1 and status live", () => {
   expect(character.level).toEqual(1);
   expect(character.status).toEqual("alive");
 });
+
+it("A character can attack another character with 100 damage", () => {
+  const characterOne = new Character();
+  const characterTwo = new Character();
+
+  characterOne.attack(characterTwo);
+
+  expect(characterTwo.health).toEqual(900);
+});
