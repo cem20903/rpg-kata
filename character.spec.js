@@ -108,3 +108,38 @@ it("A character can join two factions", () => {
 
   expect(characterOne.factions).toEqual(["faction one", "faction two"]);
 });
+
+it("A character can leave factions", () => {
+  const characterOne = new Character(1);
+
+  characterOne.factions = ["faction one"]
+  characterOne.leavesFaction("faction one")
+
+  expect(characterOne.factions).toEqual([]);
+});
+
+
+it("Two allies cannot deal damage to one another", () => {
+  const characterOne = new Character(1);
+  const characterTwo = new Character(2);
+
+  characterOne.factions = ["faction one"]
+  characterTwo.factions = ["faction one"]
+
+  characterOne.attack(characterTwo)
+
+  expect(characterTwo.health).toEqual(1000);
+});
+
+it("Two allies can heal each other", () => {
+  const characterOne = new Character(1);
+  const characterTwo = new Character(2);
+
+  characterOne.factions = ["faction one"]
+  characterTwo.factions = ["faction one"]
+  characterTwo.health = 800
+  
+  characterOne.heal(characterTwo)
+
+  expect(characterTwo.health).toEqual(900);
+});

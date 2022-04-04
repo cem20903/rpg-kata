@@ -15,12 +15,19 @@ class Character {
     this.factions = [];
   }
 
+  _canAttack(target) {
+    return !(target.id === this.id || this._areAllies(target))
+  }
+
   attack(target) {
-    if (target.id === this.id) return;
+    if (!this._canAttack(target)) return;
+    
+    
     if (this._isCharacterDead(target)) {
       this._killCharacter(target);
       return;
     }
+
     if (this._useMinAttack(target)) {
       target.health -= MIN_ATTACK_POINTS;
       return;
@@ -32,8 +39,12 @@ class Character {
     target.health -= ATTACK_POINTS;
   }
 
-  heal() {
+  heal(target) {
     if (!this.alive) return;
+    if(target && this._areAllies(target)) {
+      target.health += HEAL_POINTS
+      return
+    }
     if (!this._canCharacterBeHeal()) {
       this.health = INITAL_HEALTH;
       return;
@@ -44,6 +55,11 @@ class Character {
 
   joinsFactions(faction) {
     this.factions.push(faction);
+  }
+
+  leavesFaction(factionToRemove) {
+    const factions = this.factions.filter(faction => { return faction !== factionToRemove })
+    this.factions = factions
   }
 
   _killCharacter(target) {
@@ -65,6 +81,10 @@ class Character {
 
   _useMinAttack(target) {
     return target.level - this.level >= 5;
+  }
+
+  _areAllies(target) {
+    return target.factions.some(faction => this.factions.includes(faction) )
   }
 }
 
