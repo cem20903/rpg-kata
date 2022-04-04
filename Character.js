@@ -9,8 +9,16 @@ class Character {
     this.alive = ALIVE;
   }
 
+  _isCharacterDead(target) {
+    return target.health - ATTACK_POINTS <= 0;
+  }
+
+  _canCharacterBeHeal() {
+    return this.health + HEAL_POINTS < 1000;
+  }
+
   attack(target) {
-    if (target.health - ATTACK_POINTS <= 0) {
+    if (this._isCharacterDead(target)) {
       this._killCharacter(target);
       return;
     }
@@ -18,7 +26,8 @@ class Character {
   }
 
   heal() {
-    if (this.health + HEAL_POINTS >= 1000) {
+    if (!this.alive) return;
+    if (!this._canCharacterBeHeal()) {
       this.health = 1000;
       return;
     }

@@ -37,6 +37,19 @@ it("A character cannot heal if it has 1000 of health", () => {
   expect(characterOne.health).toEqual(1000);
 });
 
+it("A character cannot heal if it's dead", () => {
+  const characterOne = new Character();
+  const characterTwo = new Character();
+
+  for (let i = 10; i >= 0; i--) {
+    characterOne.attack(characterTwo);
+  }
+
+  characterTwo.heal();
+
+  expect(characterTwo.health).toEqual(0);
+});
+
 it("A character can heal if it has less than 1000 of health", () => {
   const characterOne = new Character();
   const characterTwo = new Character();
